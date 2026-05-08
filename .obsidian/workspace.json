@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "wiki/Apuntes/RI vs RE,  índice invertido, queries booleanas.md",
+                "file": "wiki/Apuntes/Día 2 -- Índice posicional + Phrase queries + Preprocesado + MapReduce.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "RI vs RE,  índice invertido, queries booleanas"
+              "title": "Día 2 -- Índice posicional + Phrase queries + Preprocesado + MapReduce"
             }
           }
         ]
@@ -78,8 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "right": {
     "id": "6961de26a531132e",
@@ -95,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "wiki/Apuntes/RI vs RE,  índice invertido, queries booleanas.md",
+                "file": "wiki/Apuntes/Día 2 -- Índice posicional + Phrase queries + Preprocesado + MapReduce.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -105,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Enlaces entrantes de RI vs RE,  índice invertido, queries booleanas"
+              "title": "Enlaces entrantes de Día 2 -- Índice posicional + Phrase queries + Preprocesado + MapReduce"
             }
           },
           {
@@ -186,11 +185,12 @@
   },
   "active": "0f14d4e43bd8aafa",
   "lastOpenFiles": [
+    "wiki/temas/00-plan-estudio-10-dias.md",
+    "wiki/Apuntes/Día 2 -- Índice posicional + Phrase queries + Preprocesado + MapReduce.md",
+    "wiki/Apuntes/Día 1 -- RI vs RE,  índice invertido, queries booleanas.md",
     "wiki/temas/00-aspectos-examen-RI.md",
-    "wiki/Apuntes/RI vs RE,  índice invertido, queries booleanas.md",
     "wiki/Apuntes",
     "wiki/temas/00-examenes-reales.md",
-    "wiki/temas/00-plan-estudio-10-dias.md",
     "wiki/temas/00-criterios-evaluacion.md",
     "wiki/temas/11-recuperacion-informacion.md",
     "wiki/conceptos/clasificacion-textos.md",
