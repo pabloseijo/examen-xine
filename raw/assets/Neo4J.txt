@@ -1,0 +1,641 @@
+--------------------
+------ NEO4J -------
+--------------------
+
+Paso 1. Preparación
+-------------------
+
+Antes de empezar la práctica en sí, tenemos que hacer la preparación para la misma. 
+
+mkdir -p neo4j-temp
+
+Creamos con este comando un fichero que va a ser el compartido entre mi equipo y el contenedor
+
+2Cuatri/XINE/NeoJ via  v23.0.1
+❯ docker network create network-xine-grei
+2658c7a03e3054d132a65961759f3059912143a4a25e863042ce887397ac2da5
+
+
+por otra parte creamos la red para que los contenedores puedan comunicarse entre sí 
+
+ahora por otra parte, haremos lo siguiete
+
+2Cuatri/XINE/NeoJ
+❯ docker run --name xine-grei-neo4j \
+-p 7474:7474 -p 7687:7687 \
+-d \
+-e NEO4J_AUTH=neo4j/pwalumnobd \
+-v /Users/pabloseijo/Documents/2025-2026/2Cuatri/XINE/NeoJ/neo4j-temp:/home/alumnobd/host-temp \
+--network network-xine-grei \
+neo4j:5.26.0
+dbeb024b5510a6186d61be4990873129417837ac24901f63d5312d71c687ea8f
+(base)
+
+Este comando crea y ejecuta un contenedor Neo4J a partir de la imagen oficial especificada, configurando su nombre, exponiendo los puertos necesarios para acceso web y conexión mediante protocolo Bolt, definiendo las credenciales iniciales mediante variables de entorno, montando un volumen compartido para intercambio de archivos entre el host y el contenedor, y, por último, conectándolo a la red Docker para permitir la comunicación con los demás servicios.
+
+Comprobamos que todo ha salido bien con docker ps:
+
+2Cuatri/XINE/NeoJ took 14s
+❯ docker ps
+CONTAINER ID   IMAGE          COMMAND                  CREATED         STATUS         PORTS                                                      NAMES
+bc303b911894   neo4j:5.26.0   "tini -g -- /startup…"   2 minutes ago   Up 2 minutes   0.0.0.0:7474->7474/tcp, 7473/tcp, 0.0.0.0:7687->7687/tcp   xine-grei-neo4j
+(base)
+
+
+Y accedemos a través del navegador al Neo4J browser
+
+http://localhost:7474/browser/
+
+
+
+
+Paso 2. Instalación de plugins en Neo4J
+---------------------------------------
+
+Siendo así ejecutamos:
+
+docker exec -it xine-grei-neo4j bash
+
+Este comando abre una terminal interactiva dentro del contenedor en ejecución, permitiendo ejecutar comandos directamente en su sistema operativo interno, lo cual es necesario para poder instalar los plugins en cuestión
+
+cp /home/alumnobd/host-temp/*.jar /var/lib/neo4j/plugins
+
+Este comando copia todos los archivos .jar presentes en la carpeta compartida hacia /var/lib/neo4j/plugins, que es el directorio que Neo4J utiliza para cargar extensiones y controladores
+
+cp /var/lib/neo4j/labs/apoc-5.26.0-core.jar /var/lib/neo4j/plugins
+
+Este comando copia la versión de APOC que viene incluida en la imagen de Neo4J desde el directorio labs al directorio plugins.
+
+
+Por otra parte, despues de copiar los jar hacemoslo siguiete:
+
+chown neo4j:adm /var/lib/neo4j/plugins/*.jar
+
+Este comando cambia el propietario y el grupo de todos los archivos .jar del directorio de plugins al usuario interno con el que se ejecuta Neo4J
+
+Entonces ahora una vez hecho esto hacemos
+
+exit 
+
+para salir de la terminal y reiniciamos el servidor con 
+
+docker restart xine-grei-neo4j
+
+para forzar una nueva inicialización. 
+
+Comprobamos que todo sigue en funcionamiento entrando de nuevo en la siguiente dirección:
+
+http://localhost:7474/browser/
+
+Nos conectamos a la base de datos, usando el usuario y contraseña proporcionados en el enunciado, y ejecutamos, en la terminal del browser el siguiente comando
+
+RETURN apoc.version();
+apoc.version()
+"5.26.0"
+
+Lo que, como podemos comprobar, nos devuelve la versión del APOC, viendo así que lo configuramos todo correctamente.
+
+
+
+
+
+Paso 3. comprobación del entorno de trabajo
+-------------------------------------------
+
+docker exec -it xine-grei-neo4j bash
+cypher-shell -u neo4j -p pwalumnobd
+
+entramos de nuevo al contendor e iniciamos el cliente de terminal de Neo4J autenticandonos con el usuario y la contraseña configurados al crear el contenedor, permitiendo ejecutar sentencias Cypher directamente contra la base de datos y verificar que el acceso por consola funciona correctamente.
+
+neo4j@neo4j> SHOW DATABASES;
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| name     | type       | aliases | access       | address          | role      | writer | requestedStatus | currentStatus | statusMessage | default | home  | constituents |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| "neo4j"  | "standard" | []      | "read-write" | "localhost:7687" | "primary" | TRUE   | "online"        | "online"      | ""            | TRUE    | TRUE  | []           |
+| "system" | "system"   | []      | "read-write" | "localhost:7687" | "primary" | TRUE   | "online"        | "online"      | ""            | FALSE   | FALSE | []           |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+2 rows
+ready to start consuming query after 33 ms, results consumed after another 6 ms
+
+
+
+Podemos comprobar las bases de datos disponibles
+
+ahora pondremos 
+
+:use neo4j
+
+Este comando cambia el contexto de ejecución a la base de datos neo4j, asegurando que las consultas siguientes se ejecuten sobre la base correcta.
+
+
+neo4j@neo4j> RETURN 1 AS prueba;
++--------+
+| prueba |
++--------+
+| 1      |
++--------+
+
+1 row
+ready to start consuming query after 77 ms, results consumed after another 0 ms
+
+
+Verificamos que todo funciona correctamente. 
+
+neo4j@neo4j> MATCH (n) RETURN count(n) AS totalNodos;
++------------+
+| totalNodos |
++------------+
+| 0          |
++------------+
+
+1 row
+ready to start consuming query after 72 ms, results consumed after another 1 ms
+neo4j@neo4j>
+
+Este comando cuenta todos los nodos almacenados actualmente en la base de datos y permite determinar si la base está vacía o si contiene datos residuales de pruebas anteriores que habrá que eliminar antes de empezar la importación del ejercicio. En este caso, como podemos ver, no hay nodos previos a la práctica. 
+
+Por ultimo salimos tanto del cypher-shell como del contenedor
+
+:exit
+exit
+
+
+Paso 4: preparación para la importación por JDBC
+------------------------------------------------
+
+Primero tenemos que hacer
+
+docker network connect network-xine-grei xine-grei-pgsql
+
+Para añadir el contenedor de PostgreSQL a la red docker 
+
+
+RETURN apoc.version();
+
+Hacemos esto en la terminal del browser para verificar que efectivamente sigue disponible. 
+
+
+WITH "jdbc:postgresql://xine-grei-pgsql/xine?user=alumnobd&password=pwalumnobd" AS url
+CALL apoc.load.jdbc(url,"select 1 as prueba") YIELD row
+RETURN row;
+
+Esta consulta realiza una prueba mínima de conectividad entre Neo4J y PostgreSQL utilizando JDBC. Como nos devuelve 1, sabemos que es correcto.
+
+CREATE CONSTRAINT idPelicula FOR (p:Pelicula) REQUIRE p.id IS UNIQUE;
+
+Este comando crea una restricción de unicidad sobre la propiedad id de los nodos Pelicula.
+
+CREATE CONSTRAINT idPersona FOR (p:Persona) REQUIRE p.id IS UNIQUE;
+
+Este comando crea una restricción de unicidad sobre la propiedad id de los nodos Persona, evitando duplicados en la representación de personas y asegurando consistencia cuando una misma persona aparezca varias veces en créditos de reparto o de personal técnico.
+
+
+CREATE INDEX FOR (p:Pelicula) ON (p.titulo);
+
+Este comando crea un índice sobre la propiedad titulo de los nodos Pelicula.
+
+CREATE INDEX FOR (p:Persona) ON (p.nombre);
+
+Este comando crea un índice sobre la propiedad nombre de los nodos Persona.
+
+
+
+Paso 5. importación de las 2000 películas con JDBC
+
+WITH "jdbc:postgresql://xine-grei-pgsql/xine?user=alumnobd&password=pwalumnobd" AS url
+CALL apoc.load.jdbc(url,
+"select id, titulo, presupuesto, fecha_emision, ingresos, duracion
+ from peliculas
+ order by ingresos desc, id
+ limit 2000") YIELD row
+CREATE (p:Pelicula {
+  id: row.id,
+  titulo: row.titulo,
+  presupuesto: row.presupuesto,
+  fechaEmision: row.fecha_emision,
+  ingresos: row.ingresos,
+  duracion: row.duracion
+});
+
+Importamos las películas con este comando
+
+
+MATCH (p:Pelicula)
+RETURN count(p) AS totalPeliculas;
+
+Una vez comprobé que las 2000 películas se habían importado correctamente, procedí a importar las personas involucradas en dichas películas. Para ello recuperé tanto las personas del reparto como las del personal técnico, unifiqué ambos conjuntos y eliminé duplicados por identificador, ya que el enunciado exige almacenar de cada persona únicamente su identificador y su nombre.
+
+WITH "jdbc:postgresql://xine-grei-pgsql/xine?user=alumnobd&password=pwalumnobd" AS url
+CALL apoc.load.jdbc(url,
+"select distinct id,
+        first_value(nombre) over (partition by id order by nombre) as nombre
+ from (
+   select cast(e->>'id' as integer) as id,
+          e->>'name' as nombre
+   from creditos, json_array_elements(personal) as p(e)
+   where pelicula in (
+     select id
+     from peliculas
+     order by ingresos desc, id
+     limit 2000
+   )
+   union all
+   select cast(e->>'id' as integer) as id,
+          e->>'name' as nombre
+   from creditos, json_array_elements(reparto) as r(e)
+   where pelicula in (
+     select id
+     from peliculas
+     order by ingresos desc, id
+     limit 2000
+   )
+ ) as t") YIELD row
+CREATE (p:Persona {
+  id: row.id,
+  nombre: row.nombre
+});
+
+MATCH (p:Persona)
+RETURN count(p) AS totalPersonas;
+
+Con esta consulta comprobé el número total de nodos Persona creados, con el objetivo de verificar que la importación se había realizado correctamente antes de crear las relaciones ACTUO_EN y TRABAJO_EN, ya que ambas dependen de que estos nodos existan previamente.
+
+Una vez importadas las personas, procedí a crear las relaciones que representan la participación en el reparto de cada película, almacenando además el personaje interpretado y el orden de aparición en los créditos, tal como exige expresamente el enunciado.
+
+WITH "jdbc:postgresql://xine-grei-pgsql/xine?user=alumnobd&password=pwalumnobd" AS url
+CALL apoc.load.jdbc(url,
+"select cast(e->>'id' as integer) as persona,
+        e->>'character' as personaje,
+        cast(e->>'order' as integer) as orden,
+        pelicula
+ from creditos, json_array_elements(reparto) as r(e)
+ where pelicula in (
+   select id
+   from peliculas
+   order by ingresos desc, id
+   limit 2000
+ )") YIELD row
+MATCH (pelicula:Pelicula {id: row.pelicula})
+MATCH (persona:Persona {id: row.persona})
+CREATE (persona)-[:ACTUO_EN {
+  personaje: row.personaje,
+  orden: row.orden
+}]->(pelicula);
+
+MATCH (:Persona)-[r:ACTUO_EN]->(:Pelicula)
+RETURN count(r) AS totalRelacionesActuo;
+
+Con esta consulta comprobé el número total de relaciones ACTUO_EN creadas, verificando así que la importación del reparto se había ejecutado correctamente una vez que los nodos Persona ya estaban disponibles.
+
+
+A continuación importé las relaciones correspondientes al resto del personal involucrado en la película, almacenando tanto el trabajo realizado como el departamento al que pertenecía cada persona, tal y como exige el enunciado.
+
+WITH "jdbc:postgresql://xine-grei-pgsql/xine?user=alumnobd&password=pwalumnobd" AS url
+CALL apoc.load.jdbc(url,
+"select cast(e->>'id' as integer) as persona,
+        e->>'job' as trabajo,
+        e->>'department' as departamento,
+        pelicula
+ from creditos, json_array_elements(personal) as p(e)
+ where pelicula in (
+   select id
+   from peliculas
+   order by ingresos desc, id
+   limit 2000
+ )") YIELD row
+MATCH (pelicula:Pelicula {id: row.pelicula})
+MATCH (persona:Persona {id: row.persona})
+CREATE (persona)-[:TRABAJO_EN {
+  trabajo: row.trabajo,
+  departamento: row.departamento
+}]->(pelicula);
+
+MATCH (:Persona)-[r:TRABAJO_EN]->(:Pelicula)
+RETURN count(r) AS totalRelacionesTrabajo;
+
+Con esta consulta comprobé el número total de relaciones TRABAJO_EN creadas, con el fin de asegurarme de que la importación del personal técnico se había realizado correctamente.
+
+
+------------------
+Paso 6. Consultas
+------------------
+
+1.
+
+MATCH (p:Persona)-[t:TRABAJO_EN]->(pelicula:Pelicula)
+WHERE t.trabajo = "Director"
+CREATE (p)-[:DIRIGE]->(pelicula);
+
+En esta consulta localicé todas las personas que tenían una relación TRABAJO_EN con una película y cuyo valor de la propiedad trabajo era "Director", y a partir de esas coincidencias creé una nueva relación DIRIGE entre la persona y la película, obteniendo una representación más directa de la dirección dentro del grafo.
+
+MATCH (:Persona)-[r:DIRIGE]->(:Pelicula)
+RETURN count(r) AS totalRelacionesDirige;
+
+2192
+
+
+2.
+
+MATCH (persona:Persona)-[r:ACTUO_EN]->(pelicula:Pelicula {titulo:"Star Wars"})
+RETURN r.orden AS orden,
+       r.personaje AS personaje,
+       persona.nombre AS actor
+ORDER BY r.orden;
+
+	orden	personaje	actor
+0	"Luke Skywalker"	"Mark Hamill"
+1	"Han Solo"	"Harrison Ford"
+2	"Princess Leia Organa"	"Carrie Fisher"
+3	"Grand Moff Tarkin"	"Peter Cushing"
+4	"Obi-Wan "Ben" Kenobi"	"Alec Guinness"
+
+[...]
+
+En esta consulta localicé las relaciones ACTUO_EN que conectaban personas con la película titulada "Star Wars" y devolví para cada una el orden en créditos, el personaje interpretado y el nombre de la persona, ordenando el resultado ascendentemente por la propiedad orden para respetar la secuencia del reparto.
+
+
+3.
+
+MATCH (p:Pelicula)
+RETURN p.titulo AS titulo,
+       p.presupuesto AS presupuesto,
+       p.ingresos AS ingresos,
+       (p.ingresos - p.presupuesto) AS beneficio
+ORDER BY beneficio DESC
+LIMIT 10;
+
+	titulo	presupuesto	ingresos	beneficio
+"Avatar"	237000000	2787965087	2550965087
+"Star Wars: The Force Awakens"	245000000	2068223624	1823223624
+"Titanic"	200000000	1845034188	1645034188
+"Jurassic World"	150000000	1513528810	1363528810
+"Furious 7"	190000000	1506249360	1316249360
+"The Avengers"	220000000	1519557910	1299557910
+
+[...]
+
+
+En esta consulta recorrí todos los nodos Pelicula, calculé dinámicamente el beneficio restando el presupuesto a los ingresos y devolví las diez películas con el valor más alto, ordenando el resultado de mayor a menor beneficio.
+
+
+4.
+
+MATCH (p:Persona {nombre:"Quentin Tarantino"})-[:ACTUO_EN]->(pelicula:Pelicula)
+RETURN pelicula.titulo AS titulo,
+       pelicula.fechaEmision AS fechaEmision,
+       pelicula.presupuesto AS presupuesto,
+       pelicula.ingresos AS ingresos,
+       "actuo" AS participacion
+UNION
+MATCH (p:Persona {nombre:"Quentin Tarantino"})-[:DIRIGE]->(pelicula:Pelicula)
+RETURN pelicula.titulo AS titulo,
+       pelicula.fechaEmision AS fechaEmision,
+       pelicula.presupuesto AS presupuesto,
+       pelicula.ingresos AS ingresos,
+       "dirigio" AS participacion
+ORDER BY fechaEmision;
+
+
+	titulo	fechaEmision	presupuesto	ingresos	participacion
+"Inglourious Basterds"	
+"2009-08-18"
+70000000	319131050	"actuo"
+"Pulp Fiction"	
+"1994-09-10"
+8000000	213928762	"actuo"
+"The Hateful Eight"	
+"2015-12-25"
+44000000	155760117	"actuo"
+"Django Unchained"	
+"2012-12-25"
+100000000	425368238	"actuo"
+"Pulp Fiction"	
+"1994-09-10"
+8000000	213928762	"dirigio"
+
+
+[...]
+
+En esta consulta combiné dos recorridos distintos del grafo mediante UNION: uno para las películas en las que Quentin Tarantino actuó y otro para las películas que dirigió, devolviendo en ambos casos el título, la fecha de emisión, el presupuesto, los ingresos y una columna adicional llamada participacion para distinguir el tipo de intervención.
+
+
+
+5.
+
+
+MATCH (persona:Persona)-[t:TRABAJO_EN]->(pelicula:Pelicula {titulo:"The Godfather"})
+RETURN t.departamento AS departamento,
+       count(*) AS numPersonas,
+       collect({nombre: persona.nombre, trabajo: t.trabajo}) AS personal
+ORDER BY numPersonas DESC, departamento;
+
+	departamento	numPersonas	personal
+"Production"	10	[
+{
+  "nombre": "Valerio De Paolis",
+  "trabajo": "Production Manager"
+}
+, 
+{
+  "nombre": "Fred Roos",
+  "trabajo": "Casting"
+}
+, 
+{
+  "nombre": "Andrea Eastman",
+  "trabajo": "Casting"
+}
+, 
+{
+  "nombre": "Ned Kopp",
+  "trabajo": "Production Manager"
+}
+, 
+{
+  "nombre": "Riccardo Bertoni",
+  "trabajo": "Casting"
+}
+, 
+{
+  "nombre": "Albert S. Ruddy",
+  "trabajo": "Producer"
+}
+, 
+{
+  "nombre": "Gray Frederickson",
+  "trabajo": "Associate Producer"
+}
+, 
+{
+  "nombre": "Fred C. Caruso",
+  "trabajo": "Unit Production Manager"
+}
+, 
+{
+  "nombre": "Louis DiGiaimo",
+  "trabajo": "Casting"
+}
+, 
+{
+  "nombre": "Robert Evans",
+  "trabajo": "Executive Producer"
+}
+]
+"Costume & Make-Up"	6	[
+{
+  "nombre": "George Newman",
+  "trabajo": "Costume Supervisor"
+}
+, 
+{
+  "nombre": "Marilyn Putnam",
+  "trabajo": "Costume Design"
+}
+, 
+{
+
+[...]
+
+En esta consulta localicé a todas las personas relacionadas mediante TRABAJO_EN con la película "The Godfather", agrupé las filas por el valor de departamento y devolví, para cada grupo, el número de personas involucradas y una colección de mapeos con el nombre y el trabajo realizado por cada una.
+
+
+
+
+
+
+6.
+
+MATCH (steven:Persona {nombre:"Steven Spielberg"})-[t:TRABAJO_EN]->(pelicula:Pelicula)
+WITH pelicula, t.trabajo AS trabajo
+ORDER BY pelicula.ingresos DESC
+LIMIT 1
+OPTIONAL MATCH (actor:Persona)-[:ACTUO_EN]->(pelicula)
+WITH pelicula, trabajo, count(DISTINCT actor) AS numActores
+OPTIONAL MATCH (trabajador:Persona)-[:TRABAJO_EN]->(pelicula)
+WHERE NOT (trabajador)-[:ACTUO_EN]->(pelicula)
+RETURN pelicula.titulo AS titulo,
+       trabajo,
+       pelicula.presupuesto AS presupuesto,
+       pelicula.ingresos AS ingresos,
+       numActores,
+       count(DISTINCT trabajador) AS numTrabajadores;
+
+
+	titulo	trabajo	presupuesto	ingresos	numActores	numTrabajadores
+"Jurassic World"	"Executive Producer"	150000000	1513528810	28	429
+[...]
+
+En esta consulta localicé primero todas las películas en las que Steven Spielberg había trabajado mediante la relación TRABAJO_EN, seleccioné la que tenía mayores ingresos y, sobre esa película, calculé por separado el número de personas del reparto y el número de personas del personal técnico, excluyendo de este segundo recuento a quienes también formasen parte del reparto, tal como exigía el enunciado.
+
+
+
+7.
+
+MATCH (:Persona {nombre:"Marlon Brando"})-[:ACTUO_EN]->(:Pelicula)<-[:DIRIGE]-(director:Persona)
+MATCH (director)-[:DIRIGE]->(:Pelicula)<-[:ACTUO_EN]-(actor:Persona)
+RETURN DISTINCT actor.nombre AS nombre
+ORDER BY nombre;
+
+	nombre
+"Aaron Douglas"
+"Aaron Smolinski"
+"Aaron Stanford"
+"Abanoub Andraous"
+"Abdulla Hamam"
+"Abe Vigoda"
+[...]
+
+En esta consulta obtuve primero el conjunto de directores que habían dirigido a Marlon Brando y, a continuación, recuperé todos los actores y actrices que habían sido dirigidos por cualquiera de esos directores, devolviendo únicamente los nombres sin duplicados y ordenándolos alfabéticamente.
+
+
+
+
+8.
+
+MATCH (director:Persona)-[:DIRIGE]->(pelicula:Pelicula)
+WITH pelicula,
+     collect(DISTINCT director.nombre) AS directores,
+     count(DISTINCT director) AS numDirectores
+WHERE numDirectores > 1
+RETURN pelicula.titulo AS titulo,
+       numDirectores,
+       directores
+ORDER BY numDirectores DESC, titulo;
+
+
+	titulo	numDirectores	directores
+"Fantasia"	12	["T. Hee", "Wilfred Jackson", "Ford Beebe", "Norman Ferguson", "Paul Satterfield", "James Algar", "Ben Sharpsteen", "David Hand", "Hamilton Luske", "Jim Handley", "Samuel Armstrong", "William Roberts"]
+"Fantasia 2000"	8	["Don Hahn", "Pixote Hunt", "James Algar", "Eric Goldberg", "Francis Glebas", "Paul Brizzi", "Hendel Butoy", "Gaëtan Brizzi"]
+"Bambi"	7	["Norman Wright", "Samuel Armstrong", "William Roberts", "Graham Heid", "David Hand", "Paul Satterfield", "James Algar"]
+"Airplane!"	3	["Jerry Zucker", "Jim Abrahams", "David Zucker"]
+"Alice in Wonderland"	3	["Clyde Geronimi", "Hamilton Luske", "Wilfred Jackson"]
+"Brave"	3	["Steve Purcell", "Brenda Chapman", "Mark Andrews"]
+
+
+[...]
+
+En esta consulta agrupé las películas por título a partir de las relaciones DIRIGE, calculé cuántos directores distintos tenía cada una y reuní sus nombres en una lista, filtrando posteriormente aquellas películas cuyo número de directores fuese mayor que uno y ordenando el resultado por dicho número de forma descendente.
+
+
+
+
+9.
+
+MATCH (persona:Persona)
+CALL {
+  WITH persona
+  MATCH (persona)-[:ACTUO_EN]->(pelicula:Pelicula)
+  RETURN pelicula, "reparto" AS rol
+  UNION ALL
+  WITH persona
+  MATCH (persona)-[t:TRABAJO_EN]->(pelicula:Pelicula)
+  RETURN pelicula, t.trabajo AS rol
+}
+WITH persona, pelicula, collect(rol) AS roles, count(*) AS numRoles
+RETURN persona.id AS id,
+       persona.nombre AS nombre,
+       pelicula.titulo AS titulo,
+       numRoles,
+       roles
+ORDER BY numRoles DESC, nombre, titulo
+LIMIT 10;
+
+
+	id	nombre	titulo	numRoles	roles
+2294	"Robert Rodriguez"	"Once Upon a Time in Mexico"	9	["Cinematography", "Director", "Editor", "Production Design", "Original Music Composer", "Screenplay", "Producer", "Sound Re-Recording Mixer", "Sound Effects Editor"]
+2294	"Robert Rodriguez"	"Spy Kids 2: The Island of Lost Dreams"	9	["Sound Effects Editor", "Original Music Composer", "Screenplay", "Director of Photography", "Director", "Editor", "Production Design", "Sound Re-Recording Mixer", "Producer"]
+2294	"Robert Rodriguez"	"Spy Kids"	8	["Producer", "Sound Re-Recording Mixer", "Director", "Editor", "Original Music Composer", "Visual Effects Supervisor", "Writer", "Camera Operator"]
+2294	"Robert Rodriguez"	"The Adventures of Sharkboy and Lavagirl"	8	["Director", "Camera Operator", "Director of Photography", "Writer", "Editor", "Visual Effects Supervisor", "Music", "Sound Re-Recording Mixer"]
+2294	"Robert Rodriguez"	"Sin City"	7	["Visual Effects Supervisor", "Original Music Composer", "Editor", "Camera Operator", "Sound Re-Recording Mixer", "Director", "Director of Photography"]
+2293	"Frank Miller"	"Sin City"	6	["reparto", "Comic Book", "Director", "Writer", "Graphic Novel Illustrator", "Author"]
+
+
+[...]
+
+
+En esta consulta utilicé una subconsulta con CALL para combinar en un único flujo las participaciones de reparto y de personal técnico, asignando el texto "reparto" a las relaciones ACTUO_EN y utilizando el valor de trabajo en las relaciones TRABAJO_EN, de manera que pude agrupar por persona y película, contar cuántos roles había desempeñado cada persona en una misma película y devolver las diez combinaciones con mayor número de roles.
+
+
+10.
+
+MATCH (qt:Persona {nombre:"Quentin Tarantino"})-[:DIRIGE]->(:Pelicula)<-[:ACTUO_EN]-(actor1:Persona)
+RETURN DISTINCT actor1.nombre AS nombre
+UNION
+MATCH (qt:Persona {nombre:"Quentin Tarantino"})-[:DIRIGE]->(:Pelicula)<-[:ACTUO_EN]-(actorDirigido:Persona)
+MATCH (actorDirigido)-[:ACTUO_EN]->(:Pelicula)<-[:ACTUO_EN]-(actor2:Persona)
+WHERE actor2 <> actorDirigido
+RETURN DISTINCT actor2.nombre AS nombre
+ORDER BY nombre;
+
+nombre
+"Dana Gourrier"
+"Jennifer Jason Leigh"
+"Tim Roth"
+"Gene Jones"
+"Walton Goggins"
+"Demián Bichir"
+[...]
+
+
+En esta consulta construí dos conjuntos de actores y actrices y los combiné con UNION: en el primero incluí a quienes habían actuado en películas dirigidas por Quentin Tarantino, y en el segundo a quienes habían actuado en alguna película junto a otra persona que sí había sido dirigida por él, obteniendo así la lista de personas que habían trabajado directamente con Tarantino o que podían conocer de primera mano cómo era actuar bajo su dirección.
