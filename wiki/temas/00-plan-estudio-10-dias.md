@@ -1,21 +1,42 @@
 ---
-title: Plan de Estudio — 10 días para el examen
+title: Plan de Estudio — REVISADO 11 mayo
 type: tema
 fuentes: [examenes.pdf, criterios-evaluacion.txt]
-última_actualización: 2026-05-07
+última_actualización: 2026-05-11
 ---
 
-# Plan de Estudio — 10 días para el examen
+# Plan de Estudio — REVISADO (examen el 18 de mayo)
 
-> Práctica aprobada. Solo hay que superar el **teórico**: RI (7 pts) + BD (3 pts), aprobando ambas partes de forma independiente.
-> Estructura: **7 días de aprendizaje + 3 días de repaso y simulacros.**
+> Quedan **7 días**. Días 1-3 completados. Nuevo plan: 2 días RI restante + 3 días BD + 2 días repaso.
+
+## Estado actual (11 mayo)
+
+| Bloque | Estado |
+|--------|--------|
+| RI — Índice invertido, queries booleanas, optimización | ✅ Hecho |
+| RI — Índice posicional, phrase queries, preprocesado, MapReduce | ✅ Hecho |
+| RI — TF-IDF, modelo vectorial, normalización, BIM, BM25 | ✅ Hecho |
+| RI — Métricas, PageRank, clasificación, crawling | ⏳ Pendiente |
+| BD — Todo | ⏳ Pendiente |
+
+## Plan revisado
+
+| Fecha | Qué |
+|-------|-----|
+| **11 mayo (hoy)** | RI — Métricas: P@k, MAP, MRR, NDCG, evaluación por clicks, A/B |
+| **12 mayo** | RI — PageRank, HITS, clasificación (NB/Rocchio/kNN), crawling → **RI terminado** |
+| **13 mayo** | BD — 4 modelos NoSQL, CAP, BASE, quórums, write-write, BD objeto-relacional, PostgreSQL |
+| **14 mayo** | BD — Sharding, replicación, comandos MongoDB, Neo4J/Cypher |
+| **15 mayo** | BD — Repaso y profundización de lo que haya quedado flojo |
+| **16 mayo** | Simulacro parte RI + repaso de errores |
+| **17 mayo** | Simulacro examen completo + repaso final |
+| **18 mayo** | 🎯 EXAMEN |
 
 ## Principios
 
 - Hay que **aprobar RI y BD de forma independiente** — un 10 en RI no salva un suspenso en BD
-- BD varía más entre exámenes que RI → necesita más días de preparación, no menos
-- Los días de repaso no son opcionales: aprender sin practicar no sirve para un examen
-- Estructura: **4 días RI + 3 días BD + 3 días repaso**
+- BD varía más entre exámenes → 3 días para cubrirlo con garantías
+- Los 2 días de repaso son innegociables — sin simulacros no se detectan los huecos reales
 
 ---
 
@@ -113,7 +134,7 @@ Este día es puro ejercicio. Las métricas son mecánicas pero hay que practicar
 
 ---
 
-### Día 4 — PageRank + HITS + Clasificación + Crawling + BIM + BM25
+### Día 5 — PageRank + HITS + Clasificación + Crawling 
 
 **Temas**: [[pagerank]], [[clasificacion-textos]], [[bim]]
 
