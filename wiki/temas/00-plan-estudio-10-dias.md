@@ -21,13 +21,15 @@ fuentes: [examenes.pdf, criterios-evaluacion.txt]
 
 ## Plan revisado
 
+> ⚠️ El profesor confirmó explícitamente que entra un ejercicio sobre el código de las prácticas (MongoDB + Neo4J). Hay que saber qué hace cada comando/bloque de código, no memorizarlo.
+
 | Fecha | Qué |
 |-------|-----|
-| **11 mayo (hoy)** | RI — Métricas: P@k, MAP, MRR, NDCG, evaluación por clicks, A/B |
-| **12 mayo** | RI — PageRank, HITS, clasificación (NB/Rocchio/kNN), crawling → **RI terminado** |
-| **13 mayo** | BD — 4 modelos NoSQL, CAP, BASE, quórums, write-write, BD objeto-relacional, PostgreSQL |
-| **14 mayo** | BD — Sharding, replicación, comandos MongoDB, Neo4J/Cypher |
-| **15 mayo** | BD — Repaso y profundización de lo que haya quedado flojo |
+| ~~11 mayo~~ | RI — Métricas ✅ |
+| ~~12 mayo~~ | RI — PageRank, HITS, clasificación, crawling ✅ |
+| **13 mayo (hoy)** | BD — 4 modelos NoSQL, CAP, BASE, quórums, write-write, BD objeto-relacional, PostgreSQL |
+| **14 mayo** | BD — Sharding, replicación, MongoDB (comandos prácticas), Neo4J/Cypher (comandos prácticas) |
+| **15 mayo** | BD — **Repaso código prácticas**: leer [[09-ejercicio-evaluacion-mongodb]] y [[10-ejercicio-evaluacion-neo4j]] línea a línea y ser capaz de explicar qué hace cada bloque |
 | **16 mayo** | Simulacro parte RI + repaso de errores |
 | **17 mayo** | Simulacro examen completo + repaso final |
 | **18 mayo** | 🎯 EXAMEN |
