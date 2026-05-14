@@ -72,6 +72,13 @@ Páginas actualizadas:
 - overview.md — síntesis completa de la asignatura
 - index.md — catálogo completo con todas las páginas
 
+## [2026-05-14] ingest | ComandosDia2.txt — Comandos prácticas MongoDB
+
+- Página creada: conceptos/mongodb-cluster-comandos.md
+- Contenido: todos los comandos del cluster explicados parámetro a parámetro
+- Cubre: mongod (--configsvr vs --shardsvrr), rs.initiate, mongos, sh.addShard, sh.shardCollection, createIndex, read preferences, aggregation pipeline ($match, $unwind, $group, $project, $sort, $limit)
+- Hallazgo clave: --configsvr y --shardsvrr son flags distintos; createIndex va ANTES de shardCollection
+
 ## [2026-05-07] ingest | examenes.pdf — DOCUMENTO CRÍTICO
 
 - Fuentes: exámenes reales 2024 y 2025 + apuntes completos RI + Preguntas Viqueira NoSQL
