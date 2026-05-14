@@ -13,15 +13,26 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "wiki/Apuntes/Día 2 -- Índice posicional + Phrase queries + Preprocesado + MapReduce.md",
+                "file": "wiki/Apuntes/Día 4 -- Modelo Vectorial, Similitud del Coseno ,Normalización por longitud, BIM y BM25.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Día 2 -- Índice posicional + Phrase queries + Preprocesado + MapReduce"
+              "title": "Día 4 -- Modelo Vectorial, Similitud del Coseno ,Normalización por longitud, BIM y BM25"
+            }
+          },
+          {
+            "id": "c4a3693aa040631f",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Vista gráfica"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -94,7 +105,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "wiki/Apuntes/Día 2 -- Índice posicional + Phrase queries + Preprocesado + MapReduce.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +114,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Enlaces entrantes de Día 2 -- Índice posicional + Phrase queries + Preprocesado + MapReduce"
+              "title": "Enlaces entrantes"
             }
           },
           {
@@ -113,12 +123,11 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "wiki/Apuntes/RI vs RE,  índice invertido, queries booleanas.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Enlaces salientes de RI vs RE,  índice invertido, queries booleanas"
+              "title": "Enlaces salientes"
             }
           },
           {
@@ -156,13 +165,12 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "wiki/Apuntes/RI vs RE,  índice invertido, queries booleanas.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Esquema de RI vs RE,  índice invertido, queries booleanas"
+              "title": "Esquema"
             }
           }
         ]
@@ -183,14 +191,23 @@
       "bases:Crear nueva base": false
     }
   },
-  "active": "0f14d4e43bd8aafa",
+  "active": "c4a3693aa040631f",
   "lastOpenFiles": [
+    "wiki/conceptos/neo4j-cypher-practica.md",
     "wiki/temas/00-plan-estudio-10-dias.md",
+    "wiki/conceptos/mongodb-cluster-comandos.md",
+    "wiki/Apuntes/Día 5 -- NoSQL, CAP, ACID vs BASE, Quórums, BD Objeto-Relacionales, PostgreSQL.md",
+    "Día 5 -- Métricas RI P@k, MAP, MRR, NDCG, evaluación por clicks, A B.md",
+    "wiki/Apuntes/Día 4 -- Modelo Vectorial, Similitud del Coseno ,Normalización por longitud, BIM y BM25.md",
+    "wiki/conceptos/modelo-vectorial.md",
+    "raw/assets/modelo-vectorial.png",
+    "wiki/Apuntes/Día 3 -- TF-IDF, modelo vectorial, similitud coseno, normalización por longitud y métricas de evaluación.md",
+    "wiki/temas/00-examenes-reales.md",
+    "wiki/Apuntes/RI vs RE,  índice invertido, queries booleanas.md",
     "wiki/Apuntes/Día 2 -- Índice posicional + Phrase queries + Preprocesado + MapReduce.md",
     "wiki/Apuntes/Día 1 -- RI vs RE,  índice invertido, queries booleanas.md",
     "wiki/temas/00-aspectos-examen-RI.md",
     "wiki/Apuntes",
-    "wiki/temas/00-examenes-reales.md",
     "wiki/temas/00-criterios-evaluacion.md",
     "wiki/temas/11-recuperacion-informacion.md",
     "wiki/conceptos/clasificacion-textos.md",
@@ -206,14 +223,6 @@
     "wiki/temas/09-ejercicio-evaluacion-mongodb.md",
     "wiki/comparaciones/acid-vs-base.md",
     "wiki/comparaciones/mongodb-vs-neo4j.md",
-    "wiki/comparaciones/nosql-vs-sql.md",
-    "wiki/conceptos/escalado-horizontal.md",
-    "wiki/conceptos/acid-vs-base.md",
-    "wiki/conceptos/bd-objeto-relacionales.md",
-    "wiki/conceptos/grafos.md",
-    "wiki/conceptos/modelado-documentos.md",
-    "wiki/conceptos/agregados.md",
-    "wiki/conceptos/neo4j.md",
     "raw/assets/IntroNeo4J.pdf",
     "raw/assets/Xestión de Información non Estruturada [G4012453] [2025_2026]_ Replicación y Sharding en MongoDB _ Campus Virtual.pdf",
     "raw/assets/Xestión de Información non Estruturada [G4012453] [2025_2026]_ Introducción a Neo4J _ Campus Virtual.pdf",
