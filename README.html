@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XINE — Wiki de Estudio</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #21262d;
+      --border: #30363d;
+      --accent: #58a6ff;
+      --accent2: #3fb950;
+      --accent3: #f78166;
+      --accent4: #d2a8ff;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --yellow: #e3b341;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 64px 24px 48px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .hero-badge span { color: var(--accent2); font-size: 10px; }
+
+    h1 {
+      font-size: clamp(32px, 6vw, 56px);
+      font-weight: 700;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 16px;
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 560px;
+      margin: 0 auto 32px;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 5px 12px;
+      font-size: 13px;
+      text-decoration: none;
+      color: var(--text);
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .badge:hover { border-color: var(--accent); background: #1c2128; }
+    .badge .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .dot-blue { background: var(--accent); }
+    .dot-green { background: var(--accent2); }
+    .dot-purple { background: var(--accent4); }
+    .dot-yellow { background: var(--yellow); }
+
+    /* MAIN CONTENT */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 48px 24px;
+    }
+
+    section { margin-bottom: 56px; }
+
+    h2 {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    h2 .icon { font-size: 20px; }
+
+    h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin: 28px 0 12px;
+    }
+
+    p { color: var(--text-muted); margin-bottom: 12px; }
+
+    /* EXAM CARD */
+    .exam-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .exam-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      transition: border-color 0.2s;
+    }
+
+    .exam-card:hover { border-color: var(--accent); }
+
+    .exam-card .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .exam-card .value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .exam-card .desc { font-size: 13px; color: var(--text-muted); }
+
+    /* BLOQUE CARDS */
+    .bloque-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .bloque-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+      transition: border-color 0.2s;
+    }
+
+    .bloque-card.ri { border-top: 3px solid var(--accent); }
+    .bloque-card.bd { border-top: 3px solid var(--accent2); }
+    .bloque-card:hover { border-color: var(--accent4); }
+
+    .bloque-card h4 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .bloque-card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .bloque-card ul li {
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .bloque-card ul li::before {
+      content: "→";
+      color: var(--accent);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .bloque-card.bd ul li::before { color: var(--accent2); }
+
+    /* VIDEO */
+    .video-wrapper {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .video-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .video-header .dot-row { display: flex; gap: 6px; }
+    .video-header .dot-row span {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .dot-red { background: #ff5f57; }
+    .dot-yellow-sm { background: #febc2e; }
+    .dot-green-sm { background: #28c840; }
+
+    .video-header .title {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-left: 8px;
+    }
+
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      border: none;
+    }
+
+    /* STRUCTURE */
+    .file-tree {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 13px;
+      line-height: 2;
+      color: var(--text-muted);
+      overflow-x: auto;
+    }
+
+    .file-tree .folder { color: var(--accent); }
+    .file-tree .file-imp { color: var(--yellow); }
+    .file-tree .file-star { color: var(--accent2); }
+    .file-tree .comment { color: #484f58; }
+
+    /* QUICK START */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .step {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .step-body { flex: 1; }
+    .step-body strong { color: var(--text); display: block; margin-bottom: 4px; }
+    .step-body p { font-size: 14px; margin: 0; }
+
+    code {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 12px;
+      color: var(--accent4);
+    }
+
+    /* CONTRIBUTORS */
+    .contrib-note {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent4);
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .contrib-note strong { color: var(--text); }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">
+      <span>●</span> Examen — 18 mayo 2026
+    </div>
+    <h1>Wiki de Estudio XINE</h1>
+    <p class="hero-sub">
+      Base de conocimiento mantenida por LLM para preparar el examen de
+      Xestión de Información non Estruturada. Organizada por grafos de conceptos,
+      con prioridad de examen y lista para compartir.
+    </p>
+    <div class="badges">
+      <span class="badge"><span class="dot dot-blue"></span> Recuperación de Información</span>
+      <span class="badge"><span class="dot dot-green"></span> Bases de Datos NoSQL</span>
+      <span class="badge"><span class="dot dot-purple"></span> MongoDB · Neo4J</span>
+      <span class="badge"><span class="dot dot-yellow"></span> Exámenes reales 2024 · 2025</span>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- ESTRUCTURA DEL EXAMEN -->
+    <section>
+      <h2><span class="icon">📋</span> Estructura del Examen</h2>
+      <div class="exam-grid">
+        <div class="exam-card">
+          <div class="label">Parte teórica</div>
+          <div class="value">50%</div>
+          <div class="desc">RI (7 pts) + BD (3 pts). Aprobar cada bloque por separado.</div>
+        </div>
+        <div class="exam-card">
+          <div class="label">Parte práctica</div>
+          <div class="value">50%</div>
+          <div class="desc">RI (3 pts) + BD (7 pts). Evaluación continua durante el cuatrimestre.</div>
+        </div>
+        <div class="exam-card">
+          <div class="label">Mínimo para aprobar</div>
+          <div class="value" style="color: var(--accent3);">×2</div>
+          <div class="desc">Hay que aprobar RI y BD de forma independiente en teórica Y práctica.</div>
+        </div>
+        <div class="exam-card">
+          <div class="label">Patrón histórico</div>
+          <div class="value" style="color: var(--accent2);">≈</div>
+          <div class="desc">La parte RI es casi idéntica cada año. BD varía más entre convocatorias.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BLOQUES -->
+    <section>
+      <h2><span class="icon">🗂️</span> Contenidos por Bloque</h2>
+      <div class="bloque-grid">
+        <div class="bloque-card ri">
+          <h4>🔍 Recuperación de Información <span style="color:var(--text-muted);font-weight:400;font-size:13px;">(7 pts)</span></h4>
+          <ul>
+            <li>Índice invertido — AND, OR, NOT, phrase queries, optimización</li>
+            <li>TF-IDF, modelo vectorial, similitud coseno, normalización</li>
+            <li>Métricas — P@k, MAP, MRR, NDCG, evaluación por clicks</li>
+            <li>PageRank (matriz P, teleportación) + HITS</li>
+            <li>BIM y BM25 — modelos probabilísticos</li>
+            <li>Clasificación — Naive Bayes, Rocchio, kNN</li>
+            <li>Preprocesado, MapReduce distribuido, crawling</li>
+          </ul>
+        </div>
+        <div class="bloque-card bd">
+          <h4>🗄️ Bases de Datos NoSQL <span style="color:var(--text-muted);font-weight:400;font-size:13px;">(3 pts)</span></h4>
+          <ul>
+            <li>4 modelos NoSQL — clave-valor, documentos, columnas, grafos</li>
+            <li>Teorema CAP — centralizado vs distribuido</li>
+            <li>ACID vs BASE, quórums, consistencia eventual</li>
+            <li>Replicación maestro-esclavo vs peer-to-peer, Vector Stamp</li>
+            <li>Sharding — hashed vs ranged, shard key</li>
+            <li>MongoDB cluster — mongod, mongos, rs.initiate, sh.addShard, pipeline</li>
+            <li>Neo4J / Cypher — MATCH, MERGE, WITH, collect, UNION, OPTIONAL MATCH</li>
+            <li>BD objeto-relacionales — SQL:1999, CREATE TYPE, ONLY()</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUICK START -->
+    <section>
+      <h2><span class="icon">🚀</span> Cómo usar esta wiki</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <strong>Clona el repositorio y ábrelo en Obsidian</strong>
+            <p>Importa la carpeta <code>XINE/</code> como vault en Obsidian. Los enlaces <code>[[]]</code> funcionan automáticamente.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <strong>Lee primero los documentos de entrada</strong>
+            <p>Empieza por <code>wiki/temas/00-criterios-evaluacion.md</code> y <code>wiki/temas/00-examenes-reales.md</code>. Todo lo demás sale de ahí.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <strong>Navega por el grafo de conceptos</strong>
+            <p>Usa <code>wiki/index.md</code> como mapa. Está organizado por bloques con prioridad de examen (⭐⭐⭐ = sale seguro).</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <strong>Usa Claude como tutor con el CLAUDE.md configurado</strong>
+            <p>Abre Claude Code en la raíz del repo. El <code>CLAUDE.md</code> tiene un algoritmo BFS de routing para que Claude navegue la wiki de forma eficiente. Puedes preguntarle sobre cualquier tema, pedir que te examine o que ingeste nuevos materiales.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIDEO -->
+    <section>
+      <h2><span class="icon">🎬</span> Cómo configurar Claude como brain de estudio</h2>
+      <p>Tutorial sobre cómo montar este sistema de wiki mantenida por LLM para estudiar con Claude.</p>
+      <div class="video-wrapper">
+        <div class="video-header">
+          <div class="dot-row">
+            <span class="dot-red"></span>
+            <span class="dot-yellow-sm"></span>
+            <span class="dot-green-sm"></span>
+          </div>
+          <span class="title">Cómo settear Claude como tu brain de estudio</span>
+        </div>
+        <div class="video-container">
+          <iframe
+            src="https://www.youtube.com/embed/sboNwYmH3AY"
+            title="Cómo settear Claude como tu brain de estudio"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- ESTRUCTURA DE ARCHIVOS -->
+    <section>
+      <h2><span class="icon">📁</span> Estructura del repositorio</h2>
+      <div class="file-tree">
+        <span class="folder">XINE/</span><br>
+        ├── <span class="file-imp">CLAUDE.md</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">← instrucciones para el LLM + algoritmo de routing</span><br>
+        ├── <span class="file-imp">README.html</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">← este archivo</span><br>
+        ├── raw/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">← PDFs originales (solo lectura)</span><br>
+        └── <span class="folder">wiki/</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="file-star">index.md</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">← grafo de navegación + prioridad de examen</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;├── log.md &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">← historial de cambios</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;├── overview.md &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">← síntesis general de la asignatura</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="folder">temas/</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">← resúmenes por PDF (00-examenes-reales ⭐)</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="folder">conceptos/</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">← una página atómica por concepto</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;├── <span class="folder">comparaciones/</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">← análisis cruzados y tablas comparativas</span><br>
+        &nbsp;&nbsp;&nbsp;&nbsp;└── <span class="folder">Apuntes/</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">← notas de sesiones de estudio diarias</span>
+      </div>
+    </section>
+
+    <!-- CONTRIBUIR -->
+    <section>
+      <h2><span class="icon">🤝</span> Contribuir</h2>
+      <div class="contrib-note">
+        <strong>Esta wiki está pensada para ser compartida.</strong> Si quieres añadir contenido,
+        abre una sesión de Claude Code en la raíz del repo y dile que ingeste tu material
+        (<code>"ingesta [archivo.pdf]"</code>). Claude creará las páginas siguiendo las convenciones
+        del <code>CLAUDE.md</code> y actualizará el índice automáticamente. Luego haz un PR.
+      </div>
+    </section>
+
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    Generado con <a href="https://claude.ai/code" target="_blank">Claude Code</a> ·
+    Asignatura XINE — Universidade de Santiago de Compostela ·
+    <a href="wiki/index.md">Índice de la wiki</a>
+  </footer>
+
+</body>
+</html>
