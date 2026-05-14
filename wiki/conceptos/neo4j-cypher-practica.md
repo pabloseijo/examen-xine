@@ -328,6 +328,36 @@ ORDER BY nombre;
 
 ---
 
+### MERGE — lo que cayó en el examen 2025
+
+```cypher
+MERGE (m:Movie { title:"Cloud Atlas" })
+ON CREATE SET m.released = 2012
+RETURN m;
+```
+
+| Parte | Qué hace |
+|-------|----------|
+| `MERGE (m:Movie { title:"Cloud Atlas" })` | Busca si existe un nodo Movie con title="Cloud Atlas". Si existe, lo devuelve. Si no existe, lo crea. |
+| `ON CREATE SET m.released = 2012` | Solo se ejecuta si el nodo **se acaba de crear**. Si ya existía, esta línea se ignora. |
+| `RETURN m` | Devuelve el nodo, tanto si era nuevo como si ya existía. |
+
+**MERGE vs CREATE:**
+
+| | `CREATE` | `MERGE` |
+| - | -------- | ------- |
+| Si el nodo ya existe | Crea uno nuevo (duplicado) | Devuelve el existente |
+| Si el nodo no existe | Lo crea | Lo crea |
+| Cuándo usarlo | Importaciones donde sabemos que no hay duplicados | Upsert — cuando no sabemos si ya existe |
+
+**ON CREATE SET vs SET:**
+
+- `ON CREATE SET` → solo si el nodo es nuevo
+- `ON MATCH SET` → solo si el nodo ya existía
+- `SET` → siempre, tanto si es nuevo como si ya existía
+
+---
+
 ## Resumen de cláusulas clave
 
 | Cláusula | Qué hace |
