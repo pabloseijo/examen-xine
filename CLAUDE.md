@@ -6,6 +6,20 @@ Esta wiki está pensada para ser compartida entre estudiantes. Escribe siempre c
 
 ---
 
+## ⚠️ Instrucciones explícitas del profesor sobre el examen
+
+> **El profesor dijo explícitamente** que los comandos que entran en el examen de BD son los de las prácticas — tanto los comandos del cluster MongoDB como las consultas Cypher de Neo4J.
+>
+> Para preguntas sobre qué entra en el examen de BD práctico, la fuente de verdad es:
+>
+> - [[mongodb-cluster-comandos]] — todos los comandos del cluster de la práctica MongoDB
+> - [[neo4j-cypher-practica]] — las 4 importaciones JDBC + las 10 consultas Cypher de la práctica Neo4J
+>
+>
+> El examen 2025 confirmó esto: puso comandos con la misma estructura pero nombres distintos y pedía explicar qué hace cada parámetro/cláusula. No memorizar de memoria: entender qué hace cada parte.
+
+---
+
 ## Idioma
 
 Escribe siempre en **español**. Si el material original está en gallego, cita textualmente en gallego pero explica en español.
