@@ -18,6 +18,8 @@ Esta wiki está pensada para ser compartida entre estudiantes. Escribe siempre c
 >
 > El examen 2025 confirmó esto: puso comandos con la misma estructura pero nombres distintos y pedía explicar qué hace cada parámetro/cláusula. No memorizar de memoria: entender qué hace cada parte.
 
+> **El profesor dijo explícitamente** que en la parte de Bases de Datos del examen teórico el 70% son preguntas teóricas (CAP, ACID vs BASE, replicación, sharding, modelado NoSQL...) y el 30% son preguntas prácticas (códigos MongoDB cluster + Cypher Neo4J). Al responder preguntas de BD, priorizar siempre la explicación conceptual. Los códigos son complementarios.
+
 ---
 
 ## Idioma
