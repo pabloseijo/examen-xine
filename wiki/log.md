@@ -79,6 +79,16 @@ Páginas actualizadas:
 - Cubre: mongod (--configsvr vs --shardsvrr), rs.initiate, mongos, sh.addShard, sh.shardCollection, createIndex, read preferences, aggregation pipeline ($match, $unwind, $group, $project, $sort, $limit)
 - Hallazgo clave: --configsvr y --shardsvrr son flags distintos; createIndex va ANTES de shardCollection
 
+## [2026-05-14] audit | Auditoría PDFs inbox — lagunas cubiertas
+
+Páginas actualizadas con contenido de prioridad alta/media ausente en la wiki:
+
+- `temas/03-nosql-consistencia.md` — añadido: sticky sessions como solución a read-your-writes
+- `conceptos/consistencia-eventual.md` — añadido: sección "Garantizar read-your-writes" con sticky sessions, quórum fuerte y causal consistency
+- `temas/01-nosql-modelado.md` — añadido: skinny row vs wide row, supercolumns (Cassandra); migración incremental proyectos nuevos (DBDeploy) vs legacy
+- `temas/02-nosql-distribucion.md` — ampliado: Map-Reduce incremental con caso de reducer no combinable (redes de dependencias)
+- `temas/04-bd-objeto-relacionales.md` — añadido: TREAT() vs IS OF, NEW para instanciar tipos, NOT INSTANTIABLE como tipo abstracto, FINAL
+
 ## [2026-05-07] ingest | examenes.pdf — DOCUMENTO CRÍTICO
 
 - Fuentes: exámenes reales 2024 y 2025 + apuntes completos RI + Preguntas Viqueira NoSQL

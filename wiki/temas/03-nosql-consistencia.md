@@ -51,7 +51,17 @@ El tiempo durante el cual un nodo secundario puede tener datos obsoletos. La ven
 - Frecuencia de sincronización
 - Carga del sistema
 
+### Read-your-writes y sticky sessions
+**Problema**: un cliente escribe en el primario y luego lee de un secundario antes de que se haya replicado → no ve su propia escritura.
+
+**Solución — sticky sessions**: el cliente siempre es redirigido al mismo nodo secundario (o al primario). Como el nodo "pegado" tiene la escritura más reciente del cliente, la lectura siguiente sí la ve.
+
+- Ventaja: garantiza read-your-writes sin necesidad de quórum
+- Desventaja: si el nodo asignado falla, hay que reasignar al cliente (puede haber una ventana de inconsistencia)
+- MongoDB implementa esto con `readPreference: primaryPreferred` o con sessions causales
+
 ### Relajar consistencia para mejorar rendimiento
+
 La consistencia fuerte requiere coordinación entre nodos (costosa). Relajar consistencia permite:
 - Menor latencia
 - Mayor throughput

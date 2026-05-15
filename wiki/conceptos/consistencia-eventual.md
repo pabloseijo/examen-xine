@@ -39,7 +39,15 @@ Con [[replicacion]] peer-to-peer y quórums (W, R, N):
 - Si `R + W <= N`: consistencia eventual (no hay garantía de leer la escritura más reciente)
 - Si `R + W > N`: consistencia más fuerte (siempre se lee al menos un nodo que tuvo la escritura más reciente)
 
+## Garantizar read-your-writes
+Con replicación asíncrona un cliente puede no ver su propia escritura si lee de un secundario. Mecanismos:
+
+- **Sticky sessions**: el cliente siempre va al mismo nodo (o al primario). El nodo "pegado" tiene la escritura más reciente del cliente.
+- **Quórum fuerte** (R+W>N): garantiza que al menos un nodo lector tiene la escritura más reciente.
+- **Causal consistency**: el sistema rastrea relaciones causales entre operaciones (sesiones causales en MongoDB).
+
 ## Resolución de conflictos
+
 Con consistencia eventual pueden surgir conflictos escritura-escritura que hay que resolver:
 - Last Write Wins (timestamp)
 - [[vector-stamp]]: detectar conflictos

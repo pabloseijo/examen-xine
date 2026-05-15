@@ -155,9 +155,14 @@ Datos → MapReduce1 → resultado1 → MapReduce2 → resultado2 → ...
 ```
 
 ### Map-Reduce incremental
-- Para procesar nuevos datos sin reprocesar todo el dataset
-- Mantener resultados intermedios y actualizar incrementalmente cuando llegan nuevos datos
+Para procesar nuevos datos sin reprocesar todo el dataset. Hay dos casos según si el reducer es combinable:
+
+**Caso 1 — Reducer combinable (función aditiva)**: la fase Map es fácil de ejecutar incrementalmente porque cada tarea Map es independiente. Si además el reducer es combinable (conmutativo y asociativo, como sumas o conteos), basta con ejecutar Map solo sobre los datos nuevos y combinar el resultado parcial con el resultado anterior.
+
+**Caso 2 — Reducer no combinable (red de dependencias)**: cuando el resultado de un Reduce depende de muchos resultados Map intermedios (ejemplo: pagerank, joins complejos), no se puede actualizar incrementalmente de forma sencilla. Hay que mantener un grafo de dependencias entre tareas y recalcular solo las partes del grafo que dependen de los datos que cambiaron. Esto es mucho más complejo y costoso.
+
 - Importante para sistemas en tiempo real o con actualizaciones frecuentes
+- La elección del modelo incremental depende de si la función de reducción es o no combinable
 
 ### Map-Reduce para indexado distribuido
 El caso de uso canónico de Map-Reduce en RI:

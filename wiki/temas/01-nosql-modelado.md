@@ -43,6 +43,14 @@ Las BD relacionales no escalan bien horizontalmente. Están diseñadas para un s
 - Ejemplos: Apache Cassandra, HBase, Google Bigtable
 - Caso de uso: series temporales, logs, analítica
 
+**Skinny row vs Wide row**
+ (terminología Cassandra):
+- **Skinny row**: filas con pocas columnas, número de columnas fijo y predecible. Estructura similar a una tabla relacional.
+- **Wide row**: filas con muchas columnas (potencialmente miles), donde las columnas en sí mismas son datos (ej: columna = timestamp de un evento). Permite modelar series temporales o historiales eficientemente.
+- **Supercolumn**: columna cuyo valor es a su vez un mapa de columnas (columnas anidadas). Mecanismo de Cassandra para agrupar columnas relacionadas dentro de una fila.
+
+**Lectura eficiente en column-family**: hay que denormalizar los datos en escritura para que la lectura sea eficiente. Las columnas que se leen juntas deben estar en la misma familia — cada familia se almacena físicamente por separado.
+
 ### 4. Grafos
 - Nodos y relaciones (aristas) como ciudadanos de primera clase
 - Las relaciones tienen tipo y propiedades propias
@@ -88,7 +96,14 @@ El concepto viene de DDD: los agregados son la unidad de consistencia del domini
 - Cambios de esquema: simplemente empieza a escribir documentos con la nueva estructura
 - **Migración incremental**: los documentos viejos tienen formato antiguo, los nuevos tienen el nuevo formato. La aplicación maneja ambos.
 
+### Migración incremental: proyectos nuevos vs legacy
+La estrategia de migración depende del punto de partida:
+
+- **Proyecto nuevo**: se parte de cero. Herramientas como **DBDeploy** o sistemas de scaffolding permiten versionar el esquema de la aplicación y aplicar migraciones incrementales de forma controlada desde el inicio.
+- **Proyecto legacy**: existe ya una BD relacional poblada. La migración es más delicada: hay que mantener compatibilidad con el esquema antiguo mientras se van migrando registros al nuevo formato. La aplicación debe soportar ambos formatos durante el período de transición.
+
 ### Ventajas
+
 - Mayor flexibilidad para iterar rápido
 - No hay downtime por migraciones
 - Polimorfismo natural: documentos de la misma colección pueden tener estructura diferente

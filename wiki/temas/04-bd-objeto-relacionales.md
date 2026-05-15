@@ -195,7 +195,20 @@ CREATE TYPE directivo UNDER empleado (
 ### Características de herencia
 - `UNDER supertipo`: el subtipo hereda todos los atributos y métodos del supertipo
 - Un subtipo puede **redefinir métodos** del supertipo: `OVERRIDING METHOD`
-- `NOT INSTANTIABLE`: tipo abstracto, no se pueden crear instancias directas
+- `INSTANTIABLE NOT FINAL`: puede tener instancias directas Y subtipos (lo más común)
+- `NOT INSTANTIABLE`: tipo **abstracto** — no se pueden crear instancias directas, solo de sus subtipos (equivalente a clase abstracta en OO)
+- `FINAL`: no se pueden crear subtipos de este tipo
+
+### Crear instancias con NEW
+
+Para instanciar un tipo estructurado se usa `NEW` seguido del constructor:
+
+```sql
+INSERT INTO empleados
+VALUES (NEW empleado('Ana', NEW direccion('Gran Vía', 10, '28013'), 3000.00, 500.00));
+```
+
+El constructor por defecto tiene los atributos del tipo en orden de declaración. Se pueden definir constructores adicionales con `CONSTRUCTOR METHOD`.
 
 ### Sobreescribir métodos
 ```sql
@@ -208,14 +221,26 @@ BEGIN
 END;
 ```
 
-### Filtrar por tipo en consultas
+### Filtrar por tipo en consultas: IS OF y TREAT
+
+**IS OF** — comprueba si una referencia es de un tipo concreto (o subtipo):
 ```sql
 -- Solo filas que son exactamente de tipo 'empleado' (no subtipos)
-SELECT * FROM Empleados WHERE DEREF(oid) IS OF (empleado);
+SELECT * FROM Empleados WHERE DEREF(oid) IS OF (ONLY empleado);
 
--- Usando IS OF con lista
+-- Filas que son empleado O directivo (incluye subtipos)
 SELECT * FROM Empleados WHERE DEREF(oid) IS OF (empleado, directivo);
 ```
+
+**TREAT** — castea un valor de supertipo a subtipo para acceder a sus atributos adicionales. Si el valor no es del subtipo indicado, devuelve NULL:
+```sql
+-- Acceder al presupuesto (atributo de directivo) desde la tabla supertipo
+SELECT e.nombre, TREAT(DEREF(e.oid) AS directivo).presupuesto
+FROM Empleados e
+WHERE DEREF(e.oid) IS OF (directivo);
+```
+
+**Diferencia clave**: IS OF comprueba el tipo (devuelve booleano), TREAT convierte el tipo (devuelve el valor casteado o NULL).
 
 ---
 
